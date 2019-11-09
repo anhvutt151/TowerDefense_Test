@@ -3,7 +3,9 @@ package theGame;
 import theGame.entity.AbstractEntity;
 import theGame.entity.tile.tower.*;
 import theGame.entity.enemy.*;
+import theGame.entity.bullet.Bullet;
 
+import java.awt.Rectangle;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -25,21 +27,22 @@ import java.awt.event.MouseMotionListener;
 
 import java.util.*;
 
-public final class MyGameStage extends JPanel implements ActionListener {
+public class MyGameStage extends JPanel implements ActionListener {
 	private int money = 200; // tien de mua thap
 	private int score = 0; // diem so
-	private int live = 100; // mang de tiep tuc choi
-	private int level = 0; // game level
+	private int live = 200; // mang de tiep tuc choi
+	private int level; // game level
 	
 	private Timer timer;
-	private final int DELAY = 30; // delay time
+	private final int DELAY = 40; // delay time
 	private boolean ingame = false;
 	private boolean win = true;
 	private JButton playButton = new JButton("Next Level");
 	
+	
 	private Image[] myImage;
 	//public static List<AbstractEntity> gameObjects = new ArrayList<>();
-	public final List<Enemy> gameEnemy;
+	public static List<Enemy> gameEnemy;
 	public final List<AbstractTower> towerObjects;
 	
     public MyGameStage() {
@@ -60,6 +63,8 @@ public final class MyGameStage extends JPanel implements ActionListener {
     	playButton.setBorderPainted(true);
     	sidePanel.add(playButton);
     	setLayout(null);
+    	
+    	this.level = 0;
           
         if (!ingame) {
         	initPlayButton();
@@ -127,10 +132,14 @@ public final class MyGameStage extends JPanel implements ActionListener {
     
     private void initTower() {
     	towerObjects.add(new NormalTower(50,100));
+    	towerObjects.add(new MachineGunTower(200,500));
     }
     
     private void initEnemy() {
     	gameEnemy.add(new NormalEnemy());
+    	gameEnemy.add(new BossEnemy());
+    	gameEnemy.add(new TankerEnemy());
+    	gameEnemy.add(new SmallerEnemy());
     }
     
     private Image loadImage(String file) {
@@ -157,7 +166,14 @@ public final class MyGameStage extends JPanel implements ActionListener {
     
     private void drawTower(Graphics g) {
     		for (int i = 0; i < towerObjects.size(); i++) {
-    			g.drawImage(towerObjects.get(i).getImage(), towerObjects.get(i).getPosX(), towerObjects.get(i).getPosY(), null);
+    			AbstractTower tower = towerObjects.get(i);
+    			g.drawImage(tower.getImage(), towerObjects.get(i).getPosX(), towerObjects.get(i).getPosY(), null);
+    			List<Bullet> bullet = tower.towerBullet;
+    			for (int j = 0; j < bullet.size(); j++) {
+    				if (bullet.get(j).isVisible() && gameEnemy.size() != 0) {
+    					g.drawImage(bullet.get(j).getImage(), bullet.get(j).getX(), bullet.get(j).getY(), null);
+    				}
+    			}
     		}
     }
     
@@ -184,13 +200,29 @@ public final class MyGameStage extends JPanel implements ActionListener {
     	
     	drawMap(g); // draw map
     	if (win) {		
-    		if (ingame) {
+    		if (ingame && this.level < 4) {
     			drawEnemy(g); // draw enemy
     		}
-    		drawTower(g); // draw tower
-    		g.drawImage(myImage[2], 20*50, 8*50, null); // draw gate
+    		if (this.level < 4) drawTower(g); // draw tower
+    		if (this.level == 4) {
+                String msg = "You win";
+                Font small = new Font("Helvetica", Font.BOLD, 30);
+                
+                g.setColor(Color.YELLOW);
+                g.setFont(small);
+                g.drawString(msg, 505, 360);	
+                timer.stop();
+    		}
     	}
-
+    	else {
+            String msg = "Game Over";
+            Font small = new Font("Helvetica", Font.BOLD, 30);
+            
+            g.setColor(Color.white);
+            g.setFont(small);
+            g.drawString(msg, 505, 360);
+    	}
+    	g.drawImage(myImage[2], 20*50, 8*50, null); // draw gate
     	Toolkit.getDefaultToolkit().sync();
     }
     
@@ -200,10 +232,18 @@ public final class MyGameStage extends JPanel implements ActionListener {
     		deleteAllObjects();
     		timer.stop();
     	}
-    	if (live > 0 && gameEnemy.size() == 0) {
+    	if (this.level == 3) this.level++;
+    	if (live > 0 && gameEnemy.size() == 0 && this.level < 3) {
+    		for (int i = 0; i < towerObjects.size(); i++) {
+    			List<Bullet> bullet = towerObjects.get(i).towerBullet;
+    			bullet.removeAll(bullet);
+    		}
+    		this.level++;
     		ingame = false;
     		reInitPlayButton();
     	}
+    	
+
     }
     
     // chi xoa het cac doi tuong khi nguoi choi thua
@@ -218,9 +258,8 @@ public final class MyGameStage extends JPanel implements ActionListener {
     
     // thuc hien vong lap game
     public void actionPerformed(ActionEvent e) {
-    	inGame();
-    	
     	if (ingame) {
+    		inGame();
     	
     		updateEnemy();
     	
@@ -253,12 +292,34 @@ public final class MyGameStage extends JPanel implements ActionListener {
     private void updateTower() {
     	for (int i = 0; i < towerObjects.size(); i++) {
     		towerObjects.get(i).update();
+    		
+    		for (int j = 0; j < gameEnemy.size(); j++) {
+    			if ( towerObjects.get(i).getRange().intersects(gameEnemy.get(j).getBounds()) && gameEnemy.get(j).getPosX() > 0) {
+    				towerObjects.get(i).fire(gameEnemy.get(j).getPosX(), gameEnemy.get(j).getPosY(), gameEnemy.get(j).getSpeed());
+    				break;
+    			}
+    		}
     	}
     }
     
     // kiem tra xem bullet co ban trung vao enemy hay khong
     private void checkCollisions() {
-    	
+    	for (int i = 0; i < towerObjects.size(); i++) {
+    		List<Bullet> bullet = towerObjects.get(i).towerBullet;
+    		for (int j = 0; j < bullet.size(); j++) {
+    			for (int k = 0; k < gameEnemy.size(); k++) {
+    				if (bullet.get(j).getBounds().intersects(gameEnemy.get(k).getBounds())) {
+    					bullet.get(j).setVisible(false);
+    					bullet.remove(j);
+    					gameEnemy.get(k).setBlood(towerObjects.get(i).getDamage());
+    					if (gameEnemy.get(k).getBlood() <= 0) {
+    						gameEnemy.remove(k);
+    					}
+    					break;
+    				}
+    			}
+    		}
+    	}
     }
     
 

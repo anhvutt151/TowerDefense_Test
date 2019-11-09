@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 public class SmallerEnemy extends Enemy{
 	
 	public SmallerEnemy() {
-		posX = -12;
+		posX = -400;
 		this.posY = 50;
 		this.visible = true;		
 		

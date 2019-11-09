@@ -3,6 +3,7 @@ package theGame.entity.enemy;
 import theGame.entity.GameEntity;
 
 import java.awt.Image;
+import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
@@ -48,18 +49,34 @@ public abstract class Enemy implements GameEntity{
 		this.visible = visible;
 	}
 	
+	public int getSpeed() {
+		return this.speed;
+	}
+	
 	public int getDamage() {
 		return this.damage;
+	}
+	
+	public int getBlood() {
+		return this.blood;
 	}
 	
 	public int getAward() {
 		return this.award;
 	}
 	
-	abstract public  Image loadImage();
+	public void setBlood(int getShot) {
+		this.blood -= getShot;
+	}
+	
+	abstract public Image loadImage();
 	
 	public void move() {
 		
 	}
+	
+    public Rectangle getBounds() {
+        return new Rectangle(posX, posY, 50, 50);
+    }
 
 }

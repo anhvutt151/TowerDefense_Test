@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 public class TankerEnemy extends Enemy{
 	
 	public TankerEnemy() {
-		posX = -4;
+		posX = -20;
 		this.posY = 50;
 		this.visible = true;
 		
