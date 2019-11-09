@@ -6,21 +6,57 @@ import javax.swing.ImageIcon;
 
 public class NormalEnemy extends Enemy{
 	
-	public NormalEnemy(double posX, double posY) {
-		super(posX,posY);
+	public NormalEnemy() {
+		this.posX = -6;
+		this.posY = 40;
+		this.visible = true;
+		
+		damage = 50;
 		blood = 50;
-		speed = 50;
+		speed = 2;
 		defense = 50;
 		award = 50;
 	}
 	
-	protected void move() {
-		
+	@Override
+	public void move() {
+		if (this.posY == 40 && this.posX != 150) {
+			posX += speed;
+			return;
+		}
+		if (this.posX == 150 && this.posY != 590) {
+			posY += speed;
+			return;
+		}
+		if (this.posY == 590 && this.posX != 400) {
+			posX += speed;
+			return;
+		}
+		if (this.posX == 400 && this.posY != 190) {
+			posY -= speed;
+			return;
+		}
+		if (this.posY == 190 && this.posX != 750) {
+			posX += speed;
+			return;
+		}
+		if (this.posX == 750 && this.posY != 540) {
+			posY += speed;
+			return;
+		}
+		if (this.posY == 540 && this.posX != 1000) {
+			posX += speed;
+			return;
+		}
+		if (this.posY == 540 && this.posX == 1000) {
+			visible = false;
+			finishPoint = true;
+		}
 	}
 	
 	// hien thi do hoa
-    private Image loadImage(String file) {
-        ImageIcon ii = new ImageIcon(file);
+    public Image loadImage() {
+        ImageIcon ii = new ImageIcon("src/icon/Enemy/NormalEnemy/NormalEnemy.gif");
         return ii.getImage();        
     }
     
@@ -30,7 +66,7 @@ public class NormalEnemy extends Enemy{
 	
 	// cap nhat trang thai cho cac doi tuong dong
 	public void update() {
-		
+		move();
 	}
 	
 }

@@ -8,9 +8,9 @@ public interface GameEntity {
 	void update();
 	
 	// vi tri cua doi tuong
-	double getPosX();
+	int getPosX();
 
-	double getPosY();
+	int getPosY();
 
 
 }

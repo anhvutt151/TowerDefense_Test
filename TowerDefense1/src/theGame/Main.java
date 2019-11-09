@@ -1,6 +1,8 @@
 package theGame;
 import theGame.*;
 
+import java.awt.EventQueue;
+
 
 public class Main {
 	public Main() {
@@ -11,6 +13,12 @@ public class Main {
 	public static MyFrame mainFrame;
 	
 	public static void main(String[] args) {
-		Main game = new Main();
+		EventQueue.invokeLater(() -> {
+			mainFrame = new MyFrame();
+			mainFrame.showBackground();
+			mainFrame.menu();
+			mainFrame.setVisible(true);
+		});
+		
 	}
 }
