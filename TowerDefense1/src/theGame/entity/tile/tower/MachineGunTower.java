@@ -8,16 +8,16 @@ import theGame.entity.tile.GameTile;
 import theGame.entity.enemy.Enemy;
 import theGame.entity.bullet.Bullet;
 
-public class NormalTower extends AbstractTower implements GameTile {
+public class MachineGunTower extends AbstractTower implements GameTile {
 	private final int x;
 	private final int y;
 	
-	public NormalTower(int x, int y) {
+	public MachineGunTower(int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.bulletSpeed = 3; // tuy chinh
+		this.bulletSpeed = 5; // tuy chinh
 		this.damage = 20; // tuy chinh
-		this.shootingDistance = 20; // tuy chinh
+		this.shootingDistance = 10; // tuy chinh
 	}
 	
 	public int getPosX() {
@@ -29,18 +29,17 @@ public class NormalTower extends AbstractTower implements GameTile {
 	}
 	
 	public void update() {
-		// ham kiem tra xem co ke thu nao trong tam ban hay khong. neu co thi fire()
-		// luon luon updateBullet() de cap nhat duong di cua dan
+		
 	}
 	
 	public void graphic() {
- 
+		// bo sung anh
+        ImageIcon ii = new ImageIcon("");
+        myImage = ii.getImage(); 
 	}
 	
 	@Override
 	public Image getImage() {
-        ImageIcon ii = new ImageIcon("src/icon/Tower/kale1.png");
-        myImage = ii.getImage();
 		return this.myImage;
 	}
 	
@@ -52,7 +51,7 @@ public class NormalTower extends AbstractTower implements GameTile {
 	
 	
 	public void attack(Enemy enemy) {
-		fire();
+		
 	}
 	
 }
