@@ -12,19 +12,18 @@ public class Sprite {
     protected int height;
     protected boolean visible;
     protected Image image;
-
+    
     public Sprite(int x, int y) {
-
         this.x = x;
         this.y = y;
         visible = true;
     }
 
+    /*
     protected void getImageDimensions() {
-
         width = image.getWidth(null);
         height = image.getHeight(null);
-    }
+    }*/
 
     protected void loadImage(String imageName) {
 
@@ -33,15 +32,15 @@ public class Sprite {
     }
 
     public Image getImage() {
-        return image;
+        return this.image;
     }
 
     public int getX() {
-        return x;
+        return this.x;
     }
 
     public int getY() {
-        return y;
+        return this.y;
     }
 
     public boolean isVisible() {
@@ -53,6 +52,6 @@ public class Sprite {
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(x, y, width, height);
+        return new Rectangle(x, y, 10, 10);
     }
 }

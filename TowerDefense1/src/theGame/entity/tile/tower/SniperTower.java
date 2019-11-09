@@ -9,15 +9,13 @@ import theGame.entity.enemy.Enemy;
 import theGame.entity.bullet.Bullet;
 
 public class SniperTower extends AbstractTower implements GameTile {
-	private final int x;
-	private final int y;
-	
 	public SniperTower(int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.bulletSpeed = 1; // tuy chinh
+		this.bulletSpeed = 2; // tuy chinh
 		this.damage = 40; // tuy chinh
-		this.shootingDistance = 25; // tuy chinh
+		this.shootingDistance = 400; // tuy chinh
+		graphic();
 	}
 	
 	public int getPosX() {
@@ -28,12 +26,7 @@ public class SniperTower extends AbstractTower implements GameTile {
 		return this.y;
 	}
 	
-	public void update() {
-		
-	}
-	
 	public void graphic() {
-		// bo sung anh
         ImageIcon ii = new ImageIcon("");
         myImage = ii.getImage(); 
 	}
@@ -44,13 +37,11 @@ public class SniperTower extends AbstractTower implements GameTile {
 	}
 	
 	// attack enemy
-	private void fire() {
-		// bo sung direction cho bullet 
-		towerBullet.add(new Bullet(this.x, this.y, this.bulletSpeed, this.damage));
-	}
-	
-	
-	public void attack(Enemy enemy) {
+	public void fire(int target_x, int target_y, int targetSpeed) {
+		if (this.towerBullet.size() == 0) {
+			towerBullet.add(new Bullet(this.x + 25, this.y - 10, this.bulletSpeed, this.damage, target_x, target_y));
+			towerBullet.add(new Bullet(this.x + 25, this.y - 10, this.bulletSpeed, this.damage, target_x + targetSpeed, target_y));
+		}
 		
 	}
 	

@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 public class BossEnemy extends Enemy{
 	
 	public BossEnemy() {
-		posX = -6;
+		posX = -200;
 		this.posY = 35;
 		this.visible = true;
 		

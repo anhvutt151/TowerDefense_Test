@@ -9,15 +9,13 @@ import theGame.entity.enemy.Enemy;
 import theGame.entity.bullet.Bullet;
 
 public class MachineGunTower extends AbstractTower implements GameTile {
-	private final int x;
-	private final int y;
-	
 	public MachineGunTower(int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.bulletSpeed = 5; // tuy chinh
+		this.bulletSpeed = 3; // tuy chinh
 		this.damage = 20; // tuy chinh
-		this.shootingDistance = 10; // tuy chinh
+		this.shootingDistance = 100; // tuy chinh
+		graphic();
 	}
 	
 	public int getPosX() {
@@ -28,13 +26,9 @@ public class MachineGunTower extends AbstractTower implements GameTile {
 		return this.y;
 	}
 	
-	public void update() {
-		
-	}
-	
 	public void graphic() {
 		// bo sung anh
-        ImageIcon ii = new ImageIcon("");
+        ImageIcon ii = new ImageIcon("src/icon/Tower/kuled.png");
         myImage = ii.getImage(); 
 	}
 	
@@ -44,14 +38,9 @@ public class MachineGunTower extends AbstractTower implements GameTile {
 	}
 	
 	// attack enemy
-	private void fire() {
-		// bo sung direction cho bullet 
-		towerBullet.add(new Bullet(this.x, this.y, this.bulletSpeed, this.damage));
-	}
+
 	
 	
-	public void attack(Enemy enemy) {
-		
-	}
+
 	
 }

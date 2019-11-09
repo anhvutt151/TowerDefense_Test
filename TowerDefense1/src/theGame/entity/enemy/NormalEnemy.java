@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 public class NormalEnemy extends Enemy{
 	
 	public NormalEnemy() {
-		this.posX = -6;
+		this.posX = -50;
 		this.posY = 40;
 		this.visible = true;
 		
