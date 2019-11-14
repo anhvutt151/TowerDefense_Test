@@ -14,7 +14,7 @@ public class SmallerEnemy extends Enemy{
 		damage = 50;
 		blood = 25;
 		speed = 2;
-		defense = 5;
+		defense = 50;
 		award = 50;
 	}
 	

@@ -14,7 +14,7 @@ public class TankerEnemy extends Enemy{
 		damage = 50;
 		blood = 100;
 		speed = 1;
-		defense = 10;
+		defense = 100;
 		award = 50;
 	}
 	
